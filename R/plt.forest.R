@@ -1,9 +1,12 @@
-#' This function provides a visual overview (forst plot).
+#' This function provides a visual overview (forest plot) for a \code{cace.Bayes} object and corresponding dataset.
 #' @title this plot function makes a forest plot.
-#' @param data data
-#' @param obj an S3 objective to plot
-#' @param ... optional parameters passed into the forestplot object
-#' @return It returns a forestplot object.
+#' @param data an input dataset with the same structure as the example data \code{epidural_c}, 
+#' containing multiple rows referring to multiple studies in a meta-analysis. 
+#' @param obj a \code{cace.Bayes} object, returned by \code{cace.meta.c}, \code{cace.meta.ic},
+#' or \code{cace.study}
+#' @param ... optional parameters passed into the \code{forestplot} function from the
+#' \code{forestplot} library
+#' @return It returns a forestplot object in an \code{R} plot window.
 #' @importFrom graphics par plot 
 #' @importFrom grid gpar
 #' @import forestplot
@@ -33,13 +36,12 @@ plt.forest <-
     }
     if (class(obj$smry)[1] == "matrix"){
       x <- obj$smry
-      outcacei=x[substr(row.names(x), start=1, stop=4)=="cace", ]
+      outcacei <- x[substr(row.names(x), start=1, stop=4)=="cace", ]
     }
     else if (class(obj$smry)[1] == "list"){
       outcacei <- obj$CACE
       if (nrow(outcacei) == 1) stop("forestplot cannot be made for a single study")
-      if (is.null(obj$meta)) stop("the two-step method did not run on cace.sudy \n
-                                 please input the object obtained from 'cace.meta.c' as obj2 \n") 
+
       x <- cbind(obj$meta$beta, obj$meta$beta, obj$meta$ci.lb, obj$meta$ci.ub)
       row.names(x) <-  "CACE"
       colnames(x) <-  c("Mean", "50%", "2.5%", "97.5%")
@@ -130,6 +132,5 @@ plt.forest <-
       ) 
     }
     
-    invisible()
 }
 

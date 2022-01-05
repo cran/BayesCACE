@@ -1,7 +1,7 @@
 #' This is a wrapper function for \code{jags.samples} which sets a trace
 #' monitor for all requested nodes, updates the model, and coerces the
 #' output to a single \code{mcmc.list} object. It also converts to the output
-#' to dic format, This function is based on the \code{coda.samples} function
+#' to dic format. This function is based on the \code{coda.samples} function
 #' from the \code{rjags} library, and modified by Prof. Matthias Mittner.
 #' 
 #' @title Generate posterior samples in mcmc.list format
@@ -10,15 +10,16 @@
 #' to be monitored
 #' @param n.iter number of iterations to monitor
 #' @param thin thinning interval for monitors
-#' @param ... optional arguments that are passed to the update method
-#' for jags model objects
+#' @param ... optional arguments that are passed to the \code{jags.samples} method 
+#' from the \code{rjags} library, for jags model objects
 #' @return It returns the output to the input model object, and in dic format. 
 #' @import rjags
 #' @import coda
 #' @export
-#' @references Martyn Plummer (2021). rjags: Bayesian Graphical Models using MCMC. R package version 4-12.
-#' https://CRAN.R-project.org/package=rjags
-#' @source https://ihrke.github.io/post/2014/10/07/dicjags/
+#' @references 
+#' \insertRef{plummer2021rjags}{BayesCACE}
+#' 
+#' \url{https://ihrke.github.io/post/2014/10/07/dicjags/}
 
 coda.samples.dic <- function (model, variable.names, n.iter, thin, ...)
 {
@@ -75,9 +76,8 @@ coda.samples.dic <- function (model, variable.names, n.iter, thin, ...)
 #' @import rjags 
 #' @import coda 
 #' @export 
-#' @references Martyn Plummer (2021). rjags: Bayesian Graphical Models using MCMC. R package version 4-12.
-#' https://CRAN.R-project.org/package=rjags
-#' 
+#' @references 
+#' \insertRef{plummer2021rjags}{BayesCACE}
 coda.names <- function(basename, dim)
 {
     ## Utility function used to get the names of the individual elements
@@ -125,9 +125,8 @@ coda.names <- function(basename, dim)
 #' @import rjags 
 #' @import coda 
 #' @export 
-#' @references Martyn Plummer (2021). rjags: Bayesian Graphical Models using MCMC. R package version 4-12.
-#' https://CRAN.R-project.org/package=rjags
-#' 
+#' @references 
+#' \insertRef{plummer2021rjags}{BayesCACE}
 parse.varname <- function(varname) {
 
   ## Try to parse string of form "a" or "a[n,p:q,r]" where "a" is a

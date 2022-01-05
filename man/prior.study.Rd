@@ -2,18 +2,24 @@
 % Please edit documentation in R/prior.study.R
 \name{prior.study}
 \alias{prior.study}
-\title{The function returns a custom model string specified by the user.}
+\title{The function returns a custom string that specifies part of the model (single-study).}
 \usage{
-prior.study(prior.type = "custom")
+prior.study(re.values = list())
 }
 \arguments{
-\item{prior.type}{prior type, default is "custom"}
+\item{re.values}{a list of parameter values for the random effects. It should contain the assignment for these
+parameters only: \code{n.m} and \code{n.s}, which refer to the mean and standard deviation used
+in the normal distribution estimation of \code{n}, as well as \code{a.m}, \code{a.s}, 
+\code{alpha.s.m}, \code{alpha.s.s}, \code{alpha.b.m}, \code{alpha.b.s}, \code{alpha.u.m}, \code{alpha.u.s},
+\code{alpha.v.m}, \code{alpha.v.s}. By default, this is an empty list, and all the mean are set to \code{0}, and 
+\code{alpha.n.s = alpha.a.s = 0.16}, and \code{alpha.s.s = alpha.b.s = alpha.u.s = alpha.v.s = 0.25}.}
 }
 \value{
 custom model string
 }
 \description{
-The function returns a custom model string specified by the user.
+This function returns a partially complete prior string. Used internally - cannot
+be directly used.
 }
 \examples{
 model.string <- prior.study()

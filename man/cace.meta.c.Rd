@@ -7,14 +7,9 @@
 cace.meta.c(
   data,
   param = c("CACE", "u1out", "v1out", "s1out", "b1out", "pic", "pin", "pia"),
-  prior.type = "default",
-  delta.n = TRUE,
-  delta.a = TRUE,
-  delta.u = TRUE,
-  delta.v = TRUE,
-  delta.s = TRUE,
-  delta.b = TRUE,
-  cor = TRUE,
+  random.effects = list(),
+  re.values = list(),
+  model.code = "",
   digits = 3,
   n.adapt = 1000,
   n.iter = 1e+05,
@@ -27,81 +22,76 @@ cace.meta.c(
 )
 }
 \arguments{
-\item{data}{an input dataset with the same structure as the example data `epidural_c`, 
+\item{data}{an input dataset with the same structure as the example data \code{epidural_c}, 
 containing multiple rows referring to multiple studies in a meta-analysis.}
 
 \item{param}{a character string vector indicating the parameters to be tracked and estimated. 
-By default the following parameters (see \code{details}) are included: \eqn{\theta^{CACE}} 
+By default the following parameters (see \code{details}) are included: \eqn{\theta^{\mathrm{CACE}}} 
 (\code{CACE}), \eqn{E(u_{i1})} (\code{u1out}), \eqn{E(v_{i1})} (\code{v1out}), \eqn{E(s_{i1})} (\code{s1out}), 
 \eqn{E(b_{i1})} (\code{b1out}), \eqn{\pi_a} (\code{pia}), \eqn{\pi_n} (\code{pin}), and 
 \eqn{\pi_c=1-\pi_a-\pi_n} (\code{pic}). 
-Users can modify the string vector to only include parameters of interest besides \eqn{\theta^{CACE}}.}
+Users can modify the string vector to only include parameters of interest besides \eqn{\theta^{\mathrm{CACE}}}.}
 
-\item{prior.type}{the default priors are used by the default assignment `prior.type="default"`.
-Like the function \code{\link{cace.study}}, weakly informative priors \eqn{\alpha_n, \alpha_a \sim 
-N(0, 2.5^2)} and \eqn{\alpha_s, \alpha_b, \alpha_u, \alpha_v \sim N(0, 2^2)} are assigned to the 
-means of these transformed parameters:
-\eqn{\pi_{in}=\frac{\exp(n_i)}{1+\exp(n_i)+\exp(a_i)}}, \eqn{\pi_{ia}=\frac{\exp(a_i)}{1+\exp(n_i)+\exp(a_i)}}, 
-where \eqn{n_i=\alpha_n+\delta_{in}}, \eqn{a_i=\alpha_a+\delta_{ia}}, \eqn{logit(s_{i1})=\alpha_s + \delta_{is}},
-\eqn{logit(b_{i1})=\alpha_b + \delta_{ib}}, \eqn{probit(u_{i1})=\alpha_u + \delta_{iu}}, 
-and \eqn{probit(v_{i1})=\alpha_v + \delta_{iv}}. 
-Alternatively, this function allows users to specify their own prior distributions by saving a separate 
-`R` file \code{prior.meta.R} under the same directory with the model file, and assigning the argument 
-`prior.type = "custom"`.
-Users can modify the above customized file \code{prior.meta.R} to assign their preferred prior 
-distributions. Note that same as the function \code{\link{cace.study}}, the function cannot
-combine the default priors with partial user-defined prior distributions. Thus users need to 
-be careful when choosing the customized priors: the pre-defined `R` file \code{prior.meta.R} must 
-include distributions for all hyper-parameters.}
+\item{random.effects}{a list of logical values indicating whether random effects are included in the model.
+The list should contain the assignment for these parameters only: \code{delta.n} (\eqn{\delta_{in}}), 
+\code{delta.a} (\eqn{\delta_{ia}}), \code{delta.u} (\eqn{\delta_{iu}}), \code{delta.v} (\eqn{\delta_{iv}}), 
+\code{delta.s} (\eqn{\delta_{is}}), \code{delta.b} (\eqn{\delta_{ib}}), \code{cor}. The list should be in the
+form of \code{list(delta.a = FALSE, cor = FALSE, ...)}. By default, this
+is an empty list, and all parameters are default to \code{TRUE}. Parameters that are not listed in the list
+are assumed to be \code{TRUE}. Note that \eqn{\rho} (\code{cor}) can only be included when both \eqn{\delta_{in}} 
+(\code{delta.n}) and \eqn{\delta_{ia}} (\code{delta.a}) are set to \code{TRUE}. Otherwise, a warning 
+occurs and the model continues running by forcing \code{delta.n = TRUE} and \code{delta.a = TRUE}.}
 
-\item{delta.n}{logical values indicating whether the 
-corresponding random effect is included in the model. The default model sets all of these arguments 
-to `TRUE`. Note that \eqn{\rho} (\code{cor}) can only be included when both \eqn{\delta_{in}} 
-(\code{delta.n}) and \eqn{\delta_{ia}} (\code{delta.a}) are set to `TRUE`. Otherwise, a warning 
-occurs and the model continues running by forcing `delta.n = TRUE` and `delta.a = TRUE`.}
+\item{re.values}{a list of parameter values for the random effects. It should contain the assignment for these
+parameters only: \code{alpha.n.m} and \code{alpha.n.s}, which refer to the mean and standard deviation used
+in the normal distribution estimation of \code{alpha.n}, as well as \code{alpha.a.m}, \code{alpha.a.s}, 
+\code{alpha.s.m}, \code{alpha.s.s}, \code{alpha.b.m}, \code{alpha.b.s}, \code{alpha.u.m}, \code{alpha.u.s},
+\code{alpha.v.m}, \code{alpha.v.s}. It also contains the shape and rate parameters of the gamma distributions
+of the standard deviation variable of \code{delta.n}, \code{delta.a}, \code{delta.u}, \code{delta.v}
+\code{delta.s}, \code{delta.b}. The shape parameters are named as \code{tau.n.h} and \code{tau.a.h}, for example,
+and the rate parameters are named as \code{tau.n.r} and \code{tau.a.r}. You do not need to specify the shape and
+rate parameters if the corresponding random effect is set to \code{FALSE} in \code{random.effects}, since they will
+not be used anyways. By default, \code{re.values} is an empty list, and all the mean are set to \code{0}, and 
+\code{alpha.n.s = alpha.a.s = 0.16}, and \code{alpha.s.s = alpha.b.s = alpha.u.s = alpha.v.s = 0.25},
+and the shape and rate parameters are default to \code{2}.}
 
-\item{delta.a}{see description of delta.n for more information}
+\item{model.code}{a string representation of the model code; each line should be separated. Default to constructing 
+model code using the \code{model.meta.c} function with the parameters that are inputted to this function. This 
+parameter is only necessary if user wishes to make functional changes to the model code, such as changing the
+probability distributions of the parameters. Default to empty string.}
 
-\item{delta.u}{see description of delta.n for more information}
+\item{digits}{number of digits. Default to \code{3}.}
 
-\item{delta.v}{see description of delta.n for more information}
+\item{n.adapt}{adapt value. Default to \code{1000}.}
 
-\item{delta.s}{see description of delta.n for more information}
+\item{n.iter}{number of iterations. Default to \code{100000}.}
 
-\item{delta.b}{see description of delta.n for more information}
+\item{n.burnin}{number of burn-in iterations. Default to \code{n.iter/2}.}
 
-\item{cor}{see description of delta.n for more information}
+\item{n.chains}{number of chains. Default to \code{3}.}
 
-\item{digits}{number of digits. Default to 3.}
+\item{n.thin}{thinning rate, must be a positive integer. 
 
-\item{n.adapt}{adapt value. Default to 1000.}
+Default to \code{max(1,floor((n.iter-n.burnin)/100000))}.}
 
-\item{n.iter}{number of iterations. Default to 100000.}
+\item{conv.diag}{whether or not to show convergence diagnostics. Default to \code{FALSE}.}
 
-\item{n.burnin}{number of burn-in iterations. Default to n.iter/2.}
-
-\item{n.chains}{number of chains. Default to 3.}
-
-\item{n.thin}{Default to max(1,floor((n.iter-n.burnin)/100000)).}
-
-\item{conv.diag}{Default to False.}
-
-\item{mcmc.samples}{Default to False.}
+\item{mcmc.samples}{whether to include JAGS samples in the final output. Default to \code{FALSE}.}
 
 \item{study.specific}{a logical value indicating whether to calculate the study-specific 
-\eqn{\theta^{CACE}_i}. If `TRUE`, the model will first check the logical status of arguments 
-\code{delta.u} and \code{delta.v}. If both are `FALSE`, meaning that neither response rate \eqn{u_{i1}} 
-or \eqn{v_{i1}} is modeled with a random effect, then the study-specific \eqn{\theta^{CACE}_i} is 
-the same across studies. The function gives a warning and continues by making `study.specific = FALSE`. 
-Otherwise, the study-specific \eqn{\theta^{CACE}_i} are estimated and saved as the parameter \code{cacei}.}
+\eqn{\theta^{\mathrm{CACE}}_i}. If \code{TRUE}, the model will first check the logical status of arguments 
+\code{delta.u} and \code{delta.v}. If both are \code{FALSE}, meaning that neither response rate \eqn{u_{i1}} 
+or \eqn{v_{i1}} is modeled with a random effect, then the study-specific \eqn{\theta^{\mathrm{CACE}}_i} is 
+the same across studies. The function gives a warning and continues by making \code{study.specific = FALSE}. 
+Otherwise, the study-specific \eqn{\theta^{\mathrm{CACE}}_i} are estimated and saved as the parameter \code{cacei}.}
 }
 \value{
-It returns a model object of class "cace.Bayes"
+It returns a model object of class \code{cace.Bayes}
 }
 \description{
 This function performs the Bayesian hierarchical model method for meta-analysis 
 when the dataset has complete compliance information for all studies, 
-as described in the paper Section 2.2.2, the Bayesian hierarchical model.
+as described in the Section 2.2, "the Bayesian hierarchical model", of the package manuscript.
 }
 \examples{
 \donttest{
@@ -117,12 +107,11 @@ out.meta.c$DIC
 }
 }
 \references{
-{
 \insertRef{zhou2019bayesian}{BayesCACE}
-\insertRef{zhou2020software}{BayesCACE}
+
 \insertRef{lunn2012bugs}{BayesCACE}
+
 \insertRef{zeger1988models}{BayesCACE}
-}
 }
 \seealso{
 \code{\link[BayesCACE]{cace.study}}, \code{\link[BayesCACE]{cace.meta.ic}}

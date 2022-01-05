@@ -2,7 +2,7 @@
 % Please edit documentation in R/plt.noncomp.R
 \name{plt.noncomp}
 \alias{plt.noncomp}
-\title{Plotting noncompliance rates}
+\title{Plotting noncompliance rates for a given dataset}
 \usage{
 plt.noncomp(data, overall = TRUE, ...)
 }
@@ -10,10 +10,11 @@ plt.noncomp(data, overall = TRUE, ...)
 \item{data}{a dataset with structure like the example \code{epidural_c} or \code{epidural_ic}}
 
 \item{overall}{a logical value indicating whether a summary estimate of the compliance rates 
-per randomization group is provided. The default is `TRUE`. This overall rate is estimated 
+per randomization group is provided. The default is \code{TRUE}. This overall rate is estimated 
 using a logit generalized linear mixed model.}
 
-\item{...}{optional parameters passed into the forestplot object}
+\item{...}{optional parameters passed into the \code{forestplot} function from the
+\code{forestplot} library}
 }
 \value{
 A forest plot of noncompliance rates in an \code{R} plot window
@@ -22,7 +23,7 @@ A forest plot of noncompliance rates in an \code{R} plot window
 Provides a forest plot of noncompliance rates in an \code{R} plot window.
 }
 \details{
-This function provides a visual overview (forst plot) of study-specific 
+This function provides a visual overview (forest plot) of study-specific 
 noncompliance rates in both randomization arms.
 
  Only studies with full compliance information are included in this plot 

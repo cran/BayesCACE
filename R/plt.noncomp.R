@@ -1,11 +1,12 @@
-#' This function provides a visual overview (forst plot) of study-specific 
+#' This function provides a visual overview (forest plot) of study-specific 
 #' noncompliance rates in both randomization arms.
-#' @title Plotting noncompliance rates
+#' @title Plotting noncompliance rates for a given dataset
 #' @param data a dataset with structure like the example \code{epidural_c} or \code{epidural_ic}
 #' @param overall a logical value indicating whether a summary estimate of the compliance rates 
-#' per randomization group is provided. The default is `TRUE`. This overall rate is estimated 
+#' per randomization group is provided. The default is \code{TRUE}. This overall rate is estimated 
 #' using a logit generalized linear mixed model.
-#' @param ... optional parameters passed into the forestplot object
+#' @param ... optional parameters passed into the \code{forestplot} function from the
+#' \code{forestplot} library
 #' @return A forest plot of noncompliance rates in an \code{R} plot window
 #' @description Provides a forest plot of noncompliance rates in an \code{R} plot window. 
 #' @details  Only studies with full compliance information are included in this plot 
@@ -168,6 +169,5 @@ else {
              xlab="Nocompliance Rates", ...)
 }
   
-  invisible()
   }
 

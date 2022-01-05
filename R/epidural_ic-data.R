@@ -10,9 +10,8 @@
 #'
 #' @keywords dataset
 #'
-#' @references Bannister-Tyrrell M, Miladinovic B, Roberts CL, Ford JB. 
-#' Adjustment for compliance behavior in trials of epidural analgesia in labor using instrumental variable meta-analysis. 
-#' J Clin Epidemiol. 2015 May;68(5):525-33. doi: 10.1016/j.jclinepi.2014.11.005. Epub 2014 Dec 18. PMID: 25592169.
+#' @references 
+#' \insertRef{bannister-tyrrell2015data}{BayesCACE}
 #'
 #' @source \url{https://pubmed.ncbi.nlm.nih.gov/25592169/}
 #' @examples

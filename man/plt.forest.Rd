@@ -7,17 +7,20 @@
 plt.forest(data, obj, ...)
 }
 \arguments{
-\item{data}{data}
+\item{data}{an input dataset with the same structure as the example data \code{epidural_c}, 
+containing multiple rows referring to multiple studies in a meta-analysis.}
 
-\item{obj}{an S3 objective to plot}
+\item{obj}{a \code{cace.Bayes} object, returned by \code{cace.meta.c}, \code{cace.meta.ic},
+or \code{cace.study}}
 
-\item{...}{optional parameters passed into the forestplot object}
+\item{...}{optional parameters passed into the \code{forestplot} function from the
+\code{forestplot} library}
 }
 \value{
-It returns a forestplot object.
+It returns a forestplot object in an \code{R} plot window.
 }
 \description{
-This function provides a visual overview (forst plot).
+This function provides a visual overview (forest plot) for a \code{cace.Bayes} object and corresponding dataset.
 }
 \examples{
 \donttest{

@@ -8,7 +8,8 @@ with complete complice information}
 cace.study(
   data,
   param = c("CACE", "u1", "v1", "s1", "b1", "pi.c", "pi.n", "pi.a"),
-  prior.type = "default",
+  re.values = list(),
+  model.code = "",
   digits = 3,
   n.adapt = 1000,
   n.iter = 1e+05,
@@ -22,37 +23,35 @@ cace.study(
 )
 }
 \arguments{
-\item{data}{a input dataset the same structure as the example data `epidural_c`, 
+\item{data}{a input dataset the same structure as the example data \code{epidural_c}, 
 containing either one row of observations for a single study, or multiple rows referring 
 to multiple studies in a meta-analysis.}
 
 \item{param}{a character string vector indicating the parameters to be tracked and estimated. 
-By default all parameters in the model (see \code{details}) are included: \eqn{\theta^{CACE}} 
+By default all parameters in the model (see \code{details}) are included: \eqn{\theta^{\mathrm{CACE}}} 
 (\code{CACE}), \eqn{u_1} (\code{u1}), \eqn{v_1} (\code{v1}), \eqn{s_1} (\code{s1}), \eqn{b_1} (\code{b1}), 
 \eqn{\pi_a} (\code{pi.a}), \eqn{\pi_n} (\code{pi.n}), and \eqn{\pi_c=1-\pi_a-\pi_n} (\code{pi.c}). 
 Users can modify the string vector to only include parameters of interest besides 
-\eqn{\theta^{CACE}}.}
+\eqn{\theta^{\mathrm{CACE}}}.}
 
-\item{prior.type}{the default priors are used by the default assignment `prior.type="default"`.
-They are assigned to the transformed scale of the following parameters:
-\eqn{\pi_{n}=\frac{\exp(n)}{1+\exp(n)+\exp(a)}}, \eqn{\pi_{a}=\frac{\exp(a)}{1+\exp(n)+\exp(a)}}, 
-\eqn{{logit}(s_1)=\alpha_s}, \eqn{{logit}(b_1)=\alpha_b}, \eqn{{probit}(u_1)=\alpha_u},
-and \eqn{{probit}(v_1)=\alpha_v}, where \eqn{n, a \sim N(0, 2.5^2)} and \eqn{\alpha_s, \alpha_b,
-\alpha_u, \alpha_v \sim N(0, 2^2)}. 
-Alternatively, users can specify their own prior distributions for all parameters, 
-and save them as a file \code{prior.study.R} under the same directory with the model 
-function. By assigning `prior.type = "custom"`, the function calls the user-defined 
-text string as the priors. See example in `Details`. 
-Note that if users choose the customized priors, the pre-defined \code{prior.study.R} 
-must include distributions for all parameters. The function cannot combine the default 
-priors with partial user-defined prior distributions.}
+\item{re.values}{a list of parameter values for the random effects. It should contain the assignment for these
+parameters only: \code{n.m} and \code{n.s}, which refer to the mean and standard deviation used
+in the normal distribution estimation of \code{n}, as well as \code{a.m}, \code{a.s}, 
+\code{alpha.s.m}, \code{alpha.s.s}, \code{alpha.b.m}, \code{alpha.b.s}, \code{alpha.u.m}, \code{alpha.u.s},
+\code{alpha.v.m}, \code{alpha.v.s}. By default, this is an empty list, and all the mean are set to \code{0}, and 
+\code{alpha.n.s = alpha.a.s = 0.16}, and \code{alpha.s.s = alpha.b.s = alpha.u.s = alpha.v.s = 0.25}.}
+
+\item{model.code}{a string representation of the model code; each line should be separated. Default to constructing 
+model code using the \code{model.meta.ic} function with the parameters that are inputted to this function. This 
+parameter is only necessary if user wishes to make functional changes to the model code, such as changing the
+probability distributions of the parameters. Default to empty string.}
 
 \item{digits}{a positive integer specifying the digits after the decimal point for 
 the effect size estimates. The default is \code{3}.}
 
 \item{n.adapt}{the number of iterations for adaptation in Markov chain Monte Carlo (MCMC) algorithm; 
 it is used to maximize the sampling efficiency. 
-The default is 1,000. If a warning "adaptation incomplete" appears, users may increase 
+The default is \code{1,000}. If a warning "adaptation incomplete" appears, users may increase 
 \code{n.adapt}. This argument and the following \code{n.iter}, \code{n.burnin}, \code{n.chains},
 \code{n.thin} are passed to the functions in R package \code{rjags}.}
 
@@ -72,59 +71,51 @@ large. The default is set as \code{1} or the largest integer not greater than
 \item{conv.diag}{a logical value indicating whether to compute the Gelman and Rubin 
 convergence statistic (\eqn{\hat{R}}) of each parameter as a convergence diagnostic.
 It is considered the chains are well mixed and have converged to the target distribution 
-if \eqn{\hat{R} \le 1.1}. The default is `FALSE`. If `TRUE`, \code{n.chains} must be greater than 1, 
+if \eqn{\hat{R} \le 1.1}. The default is \code{FALSE}. If \code{TRUE}, \code{n.chains} must be greater than 1, 
 and the function saves each chain's MCMC samples for all parameters, which can be used 
 to produce trace, posterior density, and auto-correlation plots by calling the function 
 \code{plt.cacebayes}.}
 
 \item{mcmc.samples}{a logical value indicating whether to save MCMC posterior samples
-in the output object. The default is `FALSE`. If `TRUE`, the output object list 
+in the output object. The default is \code{FALSE}. If \code{TRUE}, the output object list 
 includes each chain's MCMC samples for all parameters. They can be used in the function 
 \code{plt.cacebayes} to generate the trace, posterior density, and auto-correlation plots 
 for further model diagnostics.}
 
 \item{two.step}{a logical value indicating whether to conduct a two-step meta-analysis. 
-If `two.step = TRUE`, the posterior mean and standard deviation of study-specific 
-\eqn{\theta^{CACE}_i} are used to perform a standard meta-analysis, using the R package \code{metafor}.}
+If \code{two.step = TRUE}, the posterior mean and standard deviation of study-specific 
+\eqn{\theta^{\mathrm{CACE}}_i} are used to perform a standard meta-analysis, using the R package \code{metafor}.}
 
-\item{method}{the method used in meta-analysis if `two.step = TRUE`. The default estimation 
+\item{method}{the method used in meta-analysis if \code{two.step = TRUE}. The default estimation 
 method is the REML (restricted maximum-likelihood estimator) method for the random-effects 
 model. Users can change the argument \code{method} to obtain different meta-analysis 
 estimators from either a random-effects model or a fixed-effect model, e.g., 
-`method = "DL"` refers to the DerSimonian--Laird estimator, 
-`method = "HE"` returns the Hedges estimator, and `method = "HS"` gives the Hunter--Schmidt 
+\code{method = 'DL'} refers to the DerSimonian--Laird estimator, 
+\code{method = 'HE'} returns the Hedges estimator, and \code{method = 'HS'} gives the Hunter--Schmidt 
 estimator.  More details are available from the documentation of the function \code{metafor::rma}. 
 If the input data include only one study, the meta-analysis result is just the same as 
 the result from the single study.}
 }
 \value{
-It returns a model object of class "cace.Bayes"
+It returns a model object of class \code{cace.Bayes}
 }
 \description{
 This function performs CACE analysis for a single study using the 
-likelihood and model specified in the paper Section 2.1, or a two-step 
+likelihood and model specified in Section 2.1 of the package manuscript, or a two-step 
 approach for meta-analysis with complete compliance information as 
-described in the paper Section 2.2 "The two-step approach".
+described in Section 2.2, "the two-step approach".
 }
 \details{
 The likelihood \deqn{\log L({\boldsymbol{\beta}}) = N_{000}\log\{\pi_{c}(1-v_1)+\pi_{n}(1-s_1)\}+N_{001}
-\log(\pi_{c}v_1+\pi_{n}s_1)+N_{010}\log\{{\pi}_{a}(1-b_1)\} + N_{011}\log\{\pi_{a}b_1\}+ N_{100}
-\log\{\pi_{n}(1-s_1)\}+N_{101}\log({\pi}_{n}s_1) + N_{110}\log\{(\pi_{c}(1-u_1)+\pi_{a}(1-b_1)\}+
-{N_{111}\log(\pi_{c}u_1+\pi_{a}b_1)} + constant}. If the input \code{data} includes more than one study, the study-specific CACEs will be 
+\log(\pi_{c}v_1+\pi_{n}s_1)+N_{010}\log\{{\pi}_{a}(1-b_1)\}}
+\deqn{+ N_{011}\log\{\pi_{a}b_1\}+ N_{100}
+\log\{\pi_{n}(1-s_1)\}+N_{101}\log({\pi}_{n}s_1) + N_{110}\log\{(\pi_{c}(1-u_1)}
+\deqn{+ \pi_{a}(1-b_1)\}+{N_{111}\log(\pi_{c}u_1+\pi_{a}b_1)} + constant}. 
+If the input \code{data} includes more than one study, the study-specific CACEs will be 
 estimated by retrieving data row by row.
-One exmaple of the `prior.study.R` file if using `prior.type = "custom"`:
-\preformatted{prior.study <- function(prior.type = "custom") {
-string2 <- "n ~ dnorm(0, 0.01) 
-  a ~ dnorm(0, 0.01) 
-  alpha.s ~ dnorm(0, 0.01) 
-  alpha.b ~ dnorm(0, 0.01) 
-  alpha.u ~ dnorm(0, 0.01) 
-  alpha.v ~ dnorm(0, 0.01)"
-return(string2)}
-}
 By default, the function \code{cace.study()} returns a list  
 including posterior estimates (posterior mean, standard deviation, median, and a 95\% 
-credible interval (CI) with 2.5\% and 97.5\% quantiles as the lower and upper bounds), 
+credible interval (CrI) with 2.5\% and 97.5\% quantiles as the lower and upper bounds), 
 and the deviance information criterion (DIC) statistic for each study.
 }
 \examples{
@@ -133,20 +124,15 @@ data("epidural_c", package = "BayesCACE")
 set.seed(123)
 out.study <- cace.study(data = epidural_c, conv.diag = TRUE, 
 mcmc.samples = TRUE, two.step = TRUE) 
-# Show the estimates of \theta^{CACE} for each single study (posterior mean and 
+# Show the estimates of theta for each single study (posterior mean and 
 # standard deviation, posterior median, 95\% credible interval, and time-series 
 # standard error):
 out.study$CACE
-# If the argument conv.diag is specified as `TRUE`, the output list contains 
+# If the argument conv.diag is specified as TRUE, the output list contains 
 # a sub-list conv.out, which outputs the Gelman and Rubin convergence statistic,
 # labelled Point est.) calculated for each parameter from each single study, and 
 # their upper confidence limits (labelled Upper C.I.).
 out.study$conv.out[[1]]
-}
-}
-\references{
-{
-\insertRef{zhou2020software}{BayesCACE}
 }
 }
 \seealso{
