@@ -1,7 +1,7 @@
 Package: BayesCACE
 Type: Package
 Title: Bayesian Model for CACE Analysis
-Version: 1.1
+Version: 1.2
 Date: 2022-1-5
 Authors@R: 
     c(person(given = "Jinhui",
@@ -33,11 +33,11 @@ Encoding: UTF-8
 LazyData: true
 Suggests: R.rsp
 VignetteBuilder: R.rsp
-Packaged: 2022-01-05 22:30:10 UTC; james
+Packaged: 2022-01-06 01:16:39 UTC; james
 Author: Jinhui Yang [aut, cre] (<https://orcid.org/0000-0001-8322-1121>),
   Jincheng Zhou [aut] (<https://orcid.org/0000-0003-2641-2495>),
   James Hodges [ctb],
   Haitao Chu [ctb] (<https://orcid.org/0000-0003-0932-598X>)
 Maintainer: Jinhui Yang <james.yangjinhui@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-01-05 22:40:02 UTC
+Date/Publication: 2022-01-06 12:30:09 UTC

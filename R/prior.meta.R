@@ -35,7 +35,7 @@ prior.meta <- function(random.effects = list(), re.values = list()){
     if ("delta.v" %in% names(random.effects)) {delta.v <- random.effects[['delta.v']]}
     if ("delta.s" %in% names(random.effects)) {delta.s <- random.effects[['delta.s']]}
     if ("delta.b" %in% names(random.effects)) {delta.b <- random.effects[['delta.b']]}
-    if ("cor" %in% names(random.effects)) {delta.n <- random.effects[['cor']]}
+    if ("cor" %in% names(random.effects)) {cor <- random.effects[['cor']]}
     
     if ((!(delta.n & delta.a)) & cor){
       warning("'cor' can be assigned as TRUE only if both delta.n and delta.a are TRUE.\n

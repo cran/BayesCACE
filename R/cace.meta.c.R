@@ -1,6 +1,6 @@
 #' This function performs the Bayesian hierarchical model method for meta-analysis 
 #' when the dataset has complete compliance information for all studies, 
-#' as described in the Section 2.2, "the Bayesian hierarchical model", of the package manuscript.
+#' as described in Section 2.2, "the Bayesian hierarchical model", of the package manuscript.
 #' @title Bayesian hierarchical models for CACE meta-analysis with complete compliance data
 #' @param data an input dataset with the same structure as the example data \code{epidural_c}, 
 #' containing multiple rows referring to multiple studies in a meta-analysis. 
@@ -115,7 +115,7 @@ cace.meta.c <-
     if ("delta.v" %in% names(random.effects)) {delta.v <- random.effects[['delta.v']]}
     if ("delta.s" %in% names(random.effects)) {delta.s <- random.effects[['delta.s']]}
     if ("delta.b" %in% names(random.effects)) {delta.b <- random.effects[['delta.b']]}
-    if ("cor" %in% names(random.effects)) {delta.n <- random.effects[['cor']]}
+    if ("cor" %in% names(random.effects)) {cor <- random.effects[['cor']]}
     
     if ((!(delta.n & delta.a)) & cor){
       warning("'cor' can be assigned as TRUE only if both delta.n and delta.a are TRUE.\n
