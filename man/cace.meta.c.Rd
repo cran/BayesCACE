@@ -86,7 +86,7 @@ the same across studies. The function gives a warning and continues by making \c
 Otherwise, the study-specific \eqn{\theta^{\mathrm{CACE}}_i} are estimated and saved as the parameter \code{cacei}.}
 }
 \value{
-It returns a model object of class \code{cace.Bayes}
+It returns a model object whose attribute type is \code{cace.Bayes}
 }
 \description{
 This function performs the Bayesian hierarchical model method for meta-analysis 

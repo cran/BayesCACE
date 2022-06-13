@@ -1,14 +1,15 @@
-#' This function provides a visual overview (forest plot) for a \code{cace.Bayes} object and corresponding dataset.
+#' This function provides a visual overview (forest plot) for a model object and corresponding dataset.
 #' @title this plot function makes a forest plot.
 #' @param data an input dataset with the same structure as the example data \code{epidural_c}, 
 #' containing multiple rows referring to multiple studies in a meta-analysis. 
-#' @param obj a \code{cace.Bayes} object, returned by \code{cace.meta.c}, \code{cace.meta.ic},
+#' @param obj a model object returned by \code{cace.meta.c}, \code{cace.meta.ic},
 #' or \code{cace.study}
 #' @param ... optional parameters passed into the \code{forestplot} function from the
 #' \code{forestplot} library
 #' @return It returns a forestplot object in an \code{R} plot window.
 #' @importFrom graphics par plot 
 #' @importFrom grid gpar
+#' @importFrom methods is
 #' @import forestplot
 #' @export
 #' @examples
@@ -23,22 +24,21 @@ plt.forest <-
   function(data, obj, ...) {
     if(missing(obj)) stop("need to specify obj, the object generated from one of the following functions:
          cace.study, cace.meta.c, cace.meta.ic.\n")
-    if (!inherits(obj, "cace.Bayes"))
+    if (!(attributes(obj)$type) == "cace.Bayes")
       stop("Use only with 'cace.Bayes' objects, the output generated from one of the following functions:
          cace.study, cace.meta.c, cace.meta.ic.\n")
     
     if(missing(data)) stop("need to specify data")
     
-    # changed to class(obj$smry)[1] from class(obj$smry) for all the following
-    if(!class(obj$smry)[1] %in% c("matrix", "list") ){
+    if(!is(obj$smry, "matrix") & !is(obj$smry, "list") ){
       stop("'obj$smry' must be a matrix or list generated from one of the following functions:
          cace.study, cace.meta.c, cace.meta.ic.")
     }
-    if (class(obj$smry)[1] == "matrix"){
+    if (is(obj$smry, "matrix")){
       x <- obj$smry
       outcacei <- x[substr(row.names(x), start=1, stop=4)=="cace", ]
     }
-    else if (class(obj$smry)[1] == "list"){
+    else if (is(obj$smry, "list")){
       outcacei <- obj$CACE
       if (nrow(outcacei) == 1) stop("forestplot cannot be made for a single study")
 

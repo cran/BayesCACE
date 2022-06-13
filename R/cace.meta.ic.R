@@ -49,7 +49,7 @@
 #' or \eqn{v_{i1}} is modeled with a random effect, then the study-specific \eqn{\theta^{\mathrm{CACE}}_i} is 
 #' the same across studies. The function gives a warning and continues by making \code{study.specific = FALSE}. 
 #' Otherwise, the study-specific \eqn{\theta^{\mathrm{CACE}}_i} are estimated and saved as the parameter \code{cacei}.
-#' @return It returns a model object of class \code{cace.Bayes}
+#' @return It returns a model object whose attribute type is \code{cace.Bayes}
 #' @details  
 #' Note that when compiling the \code{JAGS} model, the warning `adaptation incomplete' may 
 #' occasionally occur, indicating that the number of iterations for the adaptation process 
@@ -107,7 +107,6 @@ cace.meta.ic <-
       miss.r0<-temp$miss.r0[complete.cases(temp)]
       miss.r1<-temp$miss.r1[complete.cases(temp)]
       miss<-temp$miss[complete.cases(temp)]
-      message("NA is not allowed in the input data set; the rows containing NA are removed.")
     }
     
     if(length(study.id)!=length(n000) | length(n000)!=length(n001) | length(n001)!=length(n010) | 
@@ -246,7 +245,7 @@ cace.meta.ic <-
       out$mcmc.samples<-jags.out$samples
     }
     
-    class(out)<-"cace.Bayes"
+    attributes(out)$type<-"cace.Bayes"
     return(out)
   }
 

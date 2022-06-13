@@ -63,7 +63,7 @@
 #' estimator.  More details are available from the documentation of the function \code{metafor::rma}. 
 #' If the input data include only one study, the meta-analysis result is just the same as 
 #' the result from the single study. 
-#' @return It returns a model object of class \code{cace.Bayes}
+#' @return It returns a model object whose attribute type is \code{cace.Bayes}
 #' @details  
 #' The likelihood \deqn{\log L({\boldsymbol{\beta}}) = N_{000}\log\{\pi_{c}(1-v_1)+\pi_{n}(1-s_1)\}+N_{001}
 #' \log(\pi_{c}v_1+\pi_{n}s_1)+N_{010}\log\{{\pi}_{a}(1-b_1)\}}
@@ -120,7 +120,6 @@ cace.study <-
       n101<-data$n101[complete.cases(data)]
       n110<-data$n110[complete.cases(data)]
       n111<-data$n111[complete.cases(data)]
-      message("NA is not allowed in the input data set; the rows containing NA are removed.")
     }
     
     if(length(study.id)!=length(n000) | length(n000)!=length(n001) | length(n001)!=length(n010) | 
@@ -202,7 +201,7 @@ cace.study <-
   if (two.step) {
     out$meta <- rma(yi=Mean, sei=SD, data=out$CACE, method = method)
   }
-  class(out)<-"cace.Bayes"
+  attributes(out)$type<-"cace.Bayes"
   return(out) 
 }
 

@@ -7,7 +7,7 @@
 plt.acf(obj, param = c("CACE"), trialnumber = 1, ...)
 }
 \arguments{
-\item{obj}{a \code{cace.Bayes} object, returned by \code{cace.meta.c}, \code{cace.meta.ic},
+\item{obj}{a model object, returned by \code{cace.meta.c}, \code{cace.meta.ic},
 or \code{cace.study}}
 
 \item{param}{list of parameters to plot}
@@ -22,7 +22,7 @@ from the \code{stats} library.}
 It returns an acf plot in an \code{R} plot window.
 }
 \description{
-This function creates an acf (Autocorrelation Function) plot for a \code{cace.Bayes} object.
+This function creates an acf (Autocorrelation Function) plot for a model object with the type attribute \code{cace.Bayes}.
 }
 \examples{
 \donttest{

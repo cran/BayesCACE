@@ -97,7 +97,7 @@ If the input data include only one study, the meta-analysis result is just the s
 the result from the single study.}
 }
 \value{
-It returns a model object of class \code{cace.Bayes}
+It returns a model object whose attribute type is \code{cace.Bayes}
 }
 \description{
 This function performs CACE analysis for a single study using the 

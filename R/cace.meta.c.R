@@ -51,7 +51,7 @@
 #' or \eqn{v_{i1}} is modeled with a random effect, then the study-specific \eqn{\theta^{\mathrm{CACE}}_i} is 
 #' the same across studies. The function gives a warning and continues by making \code{study.specific = FALSE}. 
 #' Otherwise, the study-specific \eqn{\theta^{\mathrm{CACE}}_i} are estimated and saved as the parameter \code{cacei}.
-#' @return It returns a model object of class \code{cace.Bayes}
+#' @return It returns a model object whose attribute type is \code{cace.Bayes}
 #' @importFrom stats update complete.cases
 #' @import Rdpack
 #' @import rjags
@@ -99,7 +99,6 @@ cace.meta.c <-
       n101<-data$n101[complete.cases(data)]
       n110<-data$n110[complete.cases(data)]
       n111<-data$n111[complete.cases(data)]
-      message("NA is not allowed in the input data set; the rows containing NA are removed.")
     }
 
     if(length(study.id)!=length(n000) | length(n000)!=length(n001) | length(n001)!=length(n010) | 
@@ -221,7 +220,7 @@ cace.meta.c <-
       out$mcmc.samples<-jags.out$samples
     }
 
-    class(out)<-"cace.Bayes"
+    attributes(out)$type<-"cace.Bayes"
     return(out) 
 }
 
