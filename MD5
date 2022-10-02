@@ -1,4 +1,4 @@
-307ca6b49bcb9cefb2bd83f1f70d9825 *DESCRIPTION
+655d2835993045f2a9e02957b055408c *DESCRIPTION
 be8179d3b58eda433df6dc8372570d59 *NAMESPACE
 58f6feb95f2939dd48aef51532ce28d9 *R/cace.meta.c.R
 09e3a5285a8051b0ab1f75bf9783510b *R/cace.meta.ic.R
@@ -11,11 +11,11 @@ ebada0ea6a820f9cc277f66d8ab1cb51 *R/model.meta.c.R
 ceb93f9816251aa6f4c252fc7918bb7b *R/model.study.R
 14a143b0d3dd2aa6e4f2c6a78b6d1c08 *R/plt.cacebayes.R
 dd8ee45163e305f03edc6c6aba6b9ac5 *R/plt.forest.R
-642408ad4de595c69c3db5eb226a188b *R/plt.noncomp.R
+633abd1b01204f66cfb431dddf80ac1e *R/plt.noncomp.R
 af01ae674ee2d9cb93736845d936bc81 *R/prior.meta.R
 e3e429145f671dc39e9a3bb3bff9067b *R/prior.study.R
-61249e145c9a7810b49bbb30b74b9acb *build/partial.rdb
-2ae60ba356e9b52804bcc0017fda66e7 *build/vignette.rds
+30151eb2cb5cde1d94055acb6a677e54 *build/partial.rdb
+13314b23b81326cd41fe110e66c88e2f *build/vignette.rds
 53756518389f683c34c7e065f35fc83c *data/epidural_c.rda
 d5ef2933ef05e404cfafdf710bf834ae *data/epidural_ic.rda
 e7ee9e5e4788b282e7f7840b76a01f3a *inst/REFERENCES.bib

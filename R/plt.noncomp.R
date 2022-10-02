@@ -106,7 +106,7 @@ if (overall) {
   forestplot(tabletext,
      graph.pos = 3,
      hrzl_lines = gpar(lwd=1, col="#444444"),
-     legend_args = fpLegend(pos = list("top", "inset"=.03, "align"="horizontal")),
+     legend_args = fpLegend(pos = list("top")),
      legend = c("P(T=0|R=1)", "P(T=1|R=0)"),
      fn.ci_norm = c(fpDrawCircleCI, fpDrawNormalCI),
      boxsize = .15, # We set the box size to better visualize the type
@@ -149,7 +149,7 @@ else {
   forestplot(tabletext,
              graph.pos = 3,
              hrzl_lines = gpar(lwd=1, col="#444444"),
-             legend_args = fpLegend(pos = list("top", "inset"=.03, "align"="horizontal")),
+             legend_args = fpLegend(pos = list("top")),
              legend = c("P(T=0|R=1)", "P(T=1|R=0)"),
              fn.ci_norm = c(fpDrawCircleCI, fpDrawNormalCI),
              boxsize = .15, # We set the box size to better visualize the type
